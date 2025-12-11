@@ -64,7 +64,23 @@
             </button>
             <div id="transcription-bar-1" class="text-input-bar multi-line-box" role="textbox" aria-multiline="true" tabindex="0">Click the mic button next to the text to start speaking...</div>
           </div>
-          <button id="clear-btn-1" class="self-end mt-1 mr-1 text-sm text-gray-400 hover:text-gray-700 font-semibold" onclick="clearText(1)">Clear</button>
+
+          <div class="text-left text-xs text-gray-700 mt-2 px-3 py-2 border border-gray-300 rounded bg-gray-50">
+            **Commands**: Speak "Next Line" for a line break.
+            <div class="mt-1">
+              **Punctuation Commands (Speak to insert)**:
+              <ul class="list-disc pl-5 mt-1 grid grid-cols-2 gap-x-4">
+                <li>Speak **"full stop"** or **"dot"** (.)</li>
+                <li>Speak **"comma"** (,)</li>
+                <li>Speak **"question mark"** (?)</li>
+                <li>Speak **"exclamation mark"** (!)</li>
+                <li>Speak **"semicolon"** (;)</li>
+                <li>Speak **"dash"** or **"hyphen"** (-)</li>
+                <li>Speak **"slash"** (/) </li>
+              </ul>
+            </div>
+          </div>
+                    <button id="clear-btn-1" class="self-end mt-1 mr-1 text-sm text-gray-400 hover:text-gray-700 font-semibold" onclick="clearText(1)">Clear Text</button>
         </div>
       </div>
     </section>
@@ -167,16 +183,18 @@ const statusMsg = document.getElementById('status-message');
 function autoPunctuate(text) {
   let result = text;
   result = result.replace(/\bcomma\b/gi, ", ");
+  result = result.replace(/\bkama\b/gi, ", ");
   result = result.replace(/\bfull stop\b/gi, ". ");
   result = result.replace(/\bpoint\b/gi, ". ");
   result = result.replace(/\bdot\b/gi, ". ");
   result = result.replace(/\bslash\b/gi, "/");
-  result = result.replace(/\bbackslash\b/gi, "\\");
+  result = result.replace(/\bbackward slash\b/gi, "\\");
+  result = result.replace(/\bcolum\b/gi, ":");
   result = result.replace(/\bcolon\b/gi, ":");
   result = result.replace(/\bsemicolon\b/gi, ";");
   result = result.replace(/\bSemi colon\b/gi, ";");
   result = result.replace(/\bdash\b/gi, "-");
-  result = result.replace(/\bminus\b/gi, "-");
+  result = result.replace(/\bhyphen\b/gi, "-");
   result = result.replace(/\bquestion mark\b/gi, "?");
   result = result.replace(/\bexclamation mark\b/gi, "!");
   
