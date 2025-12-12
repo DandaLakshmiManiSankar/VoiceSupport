@@ -3,36 +3,30 @@ from datetime import datetime, timezone
 
 app = Flask(__name__)
 
-# --- UPDATED IN-MEMORY STORE FOR 6 FIELDS (1 Multi-line + 5 Parameters) ---
-# Field IDs 1, 2, 3, 4, 5, 6 correspond to the fields in the updated index.html
+# --- IN-MEMORY STORE FOR SPEAK TO TYPE FIELD (Field 1) ---
 TRANSCRIPTS = {
     1: {"text": "", "updated_at": None}, # Speak to Type (Multi-line)
-    2: {"text": "", "updated_at": None}, # Parameter 1
-    3: {"text": "", "updated_at": None}, # Parameter 2
-    4: {"text": "", "updated_at": None}, # Parameter 3
-    5: {"text": "", "updated_at": None}, # Parameter 4 
-    6: {"text": "", "updated_at": None}, # Parameter 5 
 }
-# --------------------------------------------------------------------------
+# --------------------------------------------------------
 
 @app.route("/")
 def index():
-    # Serves templates/index.html (make sure the HTML file is in a 'templates' folder)
+    # Serves templates/index.html
     return render_template("index.html")
 
 @app.route("/save_transcript", methods=["POST"])
 def save_transcript():
     """
-    API endpoint to receive and save the transcribed text for a specific field.
+    API endpoint to receive and save the transcribed text for field 1.
     Expects JSON: {"field": 1, "text": "Final text"}
     """
     data = request.get_json(force=True)
-    # Ensure field is treated as int key
     field = int(data.get("field", 0))
     text = data.get("text", "").strip()
 
-    if field not in TRANSCRIPTS:
-        return jsonify({"success": False, "message": f"Invalid field number: {field}"}), 400
+    # Only process requests for field 1
+    if field != 1:
+        return jsonify({"success": False, "message": f"Invalid field number: {field} for this app."}), 400
 
     # Update the in-memory store
     TRANSCRIPTS[field]["text"] = text
@@ -53,5 +47,5 @@ def get_transcripts():
     return jsonify({"success": True, "data": TRANSCRIPTS})
 
 if __name__ == "__main__":
-    # Run in debug mode for local development
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    # Run on a distinct port for easy concurrent testing
+    app.run(host="0.0.0.0", port=5001, debug=True)
